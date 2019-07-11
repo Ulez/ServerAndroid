@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -40,8 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     activity.adapter.notifyDataSetChanged();
                     break;
                 case SEND_ERROR:
-                    activity.adapterData.add(msg.obj);
-                    activity.adapter.notifyDataSetChanged();
+                    Toast.makeText(activity,"发送失败:"+msg.obj,Toast.LENGTH_SHORT).show();
                     break;
             }
         }
