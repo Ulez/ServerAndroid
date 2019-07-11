@@ -73,12 +73,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void Error(String msg) {
                 tvStatus.setText(msg);
             }
-        }, new NewMsgListener() {
-            @Override
-            public void onNewMsg(String msg) {
-                adapterData.add(msg);
-                adapter.notifyDataSetChanged();
-            }
         });
     }
 

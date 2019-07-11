@@ -92,7 +92,7 @@ public class ClientManager {
         }
     }
 
-    public static ServerThread startServer(Context contect, ServerStartCallBack serverStartCallBack, NewMsgListener newMsgListener) {
+    public static ServerThread startServer(Context contect, ServerStartCallBack serverStartCallBack) {
         callBack = serverStartCallBack;
         mContext = contect.getApplicationContext();
         Log.e("lcy", "开启服务");
