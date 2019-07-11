@@ -6,6 +6,7 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -18,7 +19,7 @@ public class ClientManager {
     private static ServerStartCallBack callBack;
     private static Map<String, Socket> clientList = new HashMap<>();
     private static ServerThread serverThread = null;
-    private static PrintStream writer;
+    private static PrintWriter writer;
 
     public static class ServerThread implements Runnable {
 
@@ -51,7 +52,6 @@ public class ClientManager {
                     // 进入等待环节
                     Log.e("lcy", "等待设备的连接... ... ");
                     accept = server.accept();
-                    clientList.put("", accept);
                     // 获取手机连接的地址及端口号
                     final String address = accept.getRemoteSocketAddress().toString();
                     Log.i("lcy", "连接成功，连接的设备为：" + address);
@@ -76,10 +76,10 @@ public class ClientManager {
         public boolean sendMsgToClient(String msg) {
             try {
 //                String returnServer = "来自创维小度AI盒子：" + System.currentTimeMillis();
-                writer = new PrintStream(accept.getOutputStream());//告诉客户端连接成功 并传状态过去
+                writer = new PrintWriter(accept.getOutputStream(),true);//告诉客户端连接成功 并传状态过去
                 if (writer.checkError()) return false;
-                writer.write(msg.getBytes());
-                Log.e("lcy", "服务器发送：" + msg);
+                writer.println(msg);
+                Log.e("lcy", "println服务器发送：" + msg);
                 writer.flush();
                 return true;
             } catch (IOException e) {
