@@ -52,6 +52,7 @@ public class ClientManager {
                     // 进入等待环节
                     Log.e("lcy", "等待设备的连接... ... ");
                     accept = server.accept();
+                    writer = new PrintWriter(accept.getOutputStream(),true);//告诉客户端连接成功 并传状态过去
                     // 获取手机连接的地址及端口号
                     final String address = accept.getRemoteSocketAddress().toString();
                     Log.i("lcy", "连接成功，连接的设备为：" + address);
@@ -76,15 +77,11 @@ public class ClientManager {
         public boolean sendMsgToClient(String msg) {
             try {
 //                String returnServer = "来自创维小度AI盒子：" + System.currentTimeMillis();
-                writer = new PrintWriter(accept.getOutputStream(),true);//告诉客户端连接成功 并传状态过去
                 if (writer.checkError()) return false;
                 writer.println(msg);
                 Log.e("lcy", "println服务器发送：" + msg);
                 writer.flush();
                 return true;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
