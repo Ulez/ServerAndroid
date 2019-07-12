@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private static final int SEND_SUCCESS = 1;
     private static final int SEND_ERROR = 2;
+    private static final int RECIEVE_SUCCESS = 3;
     private TextView tvStatus;
     private EditText etIp;
     private ListView listView;
@@ -37,11 +38,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void handle(MainActivity activity, Message msg) {
             switch (msg.what) {
                 case SEND_SUCCESS:
-                    activity.adapterData.add(msg.obj);
+                    activity.adapterData.add("发送:" + msg.obj);
                     activity.adapter.notifyDataSetChanged();
                     break;
                 case SEND_ERROR:
-                    Toast.makeText(activity,"发送失败:"+msg.obj,Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "发送失败:" + msg.obj, Toast.LENGTH_SHORT).show();
+                    break;
+                case RECIEVE_SUCCESS:
+                    activity.adapterData.add("收到:" + msg.obj);
+                    activity.adapter.notifyDataSetChanged();
                     break;
             }
         }
@@ -72,6 +77,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void Error(String msg) {
                 tvStatus.setText(msg);
+            }
+        }, new NewMsgRecListener() {
+            @Override
+            public void onMsgRec(String msg) {
+                myHandler.obtainMessage(RECIEVE_SUCCESS, msg).sendToTarget();
             }
         });
     }
