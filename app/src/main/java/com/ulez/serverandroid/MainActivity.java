@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int SEND_SUCCESS = 1;
+    private static final int CONNECT_SUCCESS = 4;
     private static final int SEND_ERROR = 2;
     private static final int RECIEVE_SUCCESS = 3;
     private TextView tvStatus;
@@ -37,6 +38,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void handle(MainActivity activity, Message msg) {
             switch (msg.what) {
+                case CONNECT_SUCCESS:
+                    activity.adapterData.add("client:" + msg.obj);
+                    activity.adapter.notifyDataSetChanged();
+                    break;
                 case SEND_SUCCESS:
                     activity.adapterData.add("发送:" + msg.obj);
                     activity.adapter.notifyDataSetChanged();
@@ -82,6 +87,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onMsgRec(String msg) {
                 myHandler.obtainMessage(RECIEVE_SUCCESS, msg).sendToTarget();
+            }
+
+            @Override
+            public void onConnectState(String status) {
+                myHandler.obtainMessage(CONNECT_SUCCESS, status).sendToTarget();
             }
         });
     }

@@ -52,12 +52,13 @@ public class ClientManager {
                 while (!isExit) {
                     // 进入等待环节
                     Log.e("lcy", "等待设备的连接... ... ");
+                    mNewMsgRecListener.onConnectState("未连接！");
                     accept = server.accept();
                     writer = new PrintWriter(accept.getOutputStream(), true);//告诉客户端连接成功 并传状态过去
                     // 获取手机连接的地址及端口号
                     final String address = accept.getRemoteSocketAddress().toString();
                     Log.i("lcy", "连接成功，连接的设备为：" + address);
-
+                    mNewMsgRecListener.onConnectState(address);
                     InputStream inputStream = accept.getInputStream();
                     byte[] buffer = new byte[1024];
                     int len;
@@ -67,6 +68,7 @@ public class ClientManager {
                     }
                 }
             } catch (IOException e) {
+                Log.e("lcy",""+e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -97,6 +99,8 @@ public class ClientManager {
             }
         }
     }
+
+
 
     public static ServerThread startServer(Context contect, ServerStartCallBack serverStartCallBack, NewMsgRecListener newMsgRecListener) {
         callBack = serverStartCallBack;
